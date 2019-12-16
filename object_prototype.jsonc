@@ -1,0 +1,68 @@
+{
+    "UsersSchema": {
+        "UserData": { // created
+            "UserId": "Int",
+            "Email": "String", // Unique
+            "PhoneNumber": "String", // Unique
+            "Password": "String",
+            "IdentityId": "Int|[UsersIdentity.IdentityId]" // -> UserIdentity
+        },
+        "UsersIdentity": { // created
+            "IdentityId": "Int",
+            "FirstName": "String",
+            "LastName": "String",
+            "IDCardCode": "String"
+        }
+    },
+    "HotelSchema": {
+        "Hotel": { // created
+            "HotelId": "Int",
+            "HotelName": "String",
+            "HotelLocation": "Int|[LocationId]",
+            "Star_Rating": "Int|[4|5]",
+            "Review_Score": "Float",
+            "Price": "Int" // Harga termurah dari kamar yang disediakan.
+            // Facilities: [HotelFacilities.HotelId]
+            // "RoomsAvailability": "Int" // Being checked to HotelRooms.Availability
+        },
+        "HotelRooms": { // created
+            "RoomId": "Int",
+            "HotelId": "Int",
+            "RoomType": "String|[Superior|Deluxe|Premiere|Suite|Penthouse]",
+            "PricePerNight": "Int",
+            "BedOption": "String|[King Size|Twin]",
+            "isSmokingRoom": "Bit|[0|1]",
+            "isAvailable": "Bit|[0|1]"
+        },
+        "HotelLocation": { // created
+            "LocationId": "Int",
+            "Street": "String",
+            "City": "String",
+            "Province": "String",
+            "PostCode": "Int"
+        },
+        "HotelReview": { // created
+            "ReviewId": "Int",
+            "UserId": "Int",
+            "HotelId": "Int",
+            "Review_Score": "Int|1-5"
+        },
+        "HotelFacilities": { // created
+            "FacilityId": "Int",
+            "HotelId": "Int",
+            "Name": "String"
+        }
+    },
+    "TransactionSchema": {
+        "BookingTransaction": { // created
+            "TransactionId": "Int",
+            "UserId": "Int",
+            "HotelId": "Int",
+            "RoomId": "Int|[RoomId]",
+            "Duration": "Int",
+            "CheckIn": "Date",
+            "CheckOut": "Date",
+            "BookingId": "String"
+        }
+    }
+}
