@@ -79,7 +79,7 @@ CREATE TABLE [dbo].[tblHotel]
     [HotelId]       INT NOT NULL IDENTITY(1, 1),        -- Primary Key
     [HotelName]     NVARCHAR(255) NOT NULL,             -- Unique
     [HotelLocation] INT NOT NULL,                       -- Foreign Key. Reference -> tblHotelLocation.LocationId
-    [StarRating]    INT NOT NULL DEFAULT (4),
+    [StarRating]    TINYINT NOT NULL DEFAULT (4),
     [ReviewScore]   FLOAT NOT NULL DEFAULT (0.0),
     [LowestPrice]   INT NOT NULL DEFAULT (0),
     CONSTRAINT PK_Hotel PRIMARY KEY (HotelId),
@@ -116,8 +116,7 @@ CREATE TABLE [dbo].[tblHotelFacilities]
     [HotelId]       INT NOT NULL,                       -- Foreign Key. Reference -> tblHotel.HotelId
     [FacilityName]  VARCHAR(18) NOT NULL,               -- Unique
     CONSTRAINT PK_HotelFacilities PRIMARY KEY (FacilityId),
-    CONSTRAINT FK_HotelFacilities FOREIGN KEY (HotelId) REFERENCES [dbo].[tblHotel](HotelId),
-    CONSTRAINT UK_HotelFacilities UNIQUE (FacilityName)
+    CONSTRAINT FK_HotelFacilities FOREIGN KEY (HotelId) REFERENCES [dbo].[tblHotel](HotelId)
 );
 GO
 
@@ -134,7 +133,7 @@ CREATE TABLE [dbo].[tblHotelRooms]
     [PricePerNight] INT NOT NULL,
     [BedOption]     VARCHAR(10) NOT NULL,
     [isSmokingRoom] BIT NOT NULL DEFAULT (0),
-    [isAvailable]   BIT NOT NULL DEFAULT (0),
+    [isAvailable]   BIT NOT NULL DEFAULT (1),
     CONSTRAINT PK_HotelRooms PRIMARY KEY (RoomId),
     CONSTRAINT FK_HotelRooms FOREIGN KEY (HotelId) REFERENCES [dbo].[tblHotel](HotelId)
 );
@@ -156,7 +155,8 @@ CREATE TABLE [dbo].[tblBookingTransaction]
     [Duration]      INT NOT NULL DEFAULT (1),           -- Duration in days.
     [CheckIn]       SMALLDATETIME NOT NULL,             -- smalldatetime: YYYY-MM-DD hh:mm:ss
     [CheckOut]      SMALLDATETIME NOT NULL,
-    [BookingId]     VARCHAR(255) NOT NULL               -- Unique. Format: #DDB00000N, Whereas N represented as a transactionId. Use trigger to do this one (or function).
+    [BookingId]     AS '#DDB' + RIGHT(1000000 + transactionId, 5)
+    -- Unique. Format: #DDB00000N, Whereas N represented as a transactionId. Use trigger to do this one (or function).
     CONSTRAINT PK_BT PRIMARY KEY (TransactionId),
     CONSTRAINT FK_BTUser FOREIGN KEY (UserId) REFERENCES [dbo].[tblUserData](UserId),
     CONSTRAINT FK_BTHotel FOREIGN KEY (HotelId) REFERENCES [dbo].[tblHotel](HotelId),
