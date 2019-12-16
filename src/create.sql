@@ -157,6 +157,9 @@ CREATE TABLE [dbo].[tblBookingTransaction]
     [CheckOut]      SMALLDATETIME NOT NULL,
     [BookingId]     AS '#DDB' + RIGHT(1000000 + transactionId, 5)
     -- Unique. Format: #DDB00000N, Whereas N represented as a transactionId. Use trigger to do this one (or function).
+    -- References:
+    -- https://social.msdn.microsoft.com/Forums/sqlserver/en-US/0eaa0bfb-82bc-4390-9852-056fa389c1df/concat-with-autoincrement-column?forum=transactsql
+    -- https://www.techonthenet.com/sql_server/functions/right.php
     CONSTRAINT PK_BT PRIMARY KEY (TransactionId),
     CONSTRAINT FK_BTUser FOREIGN KEY (UserId) REFERENCES [dbo].[tblUserData](UserId),
     CONSTRAINT FK_BTHotel FOREIGN KEY (HotelId) REFERENCES [dbo].[tblHotel](HotelId),
