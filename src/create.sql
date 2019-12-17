@@ -1,5 +1,3 @@
--- Debug
-SELECT [name] FROM sys.databases
 -- Main Query, step by step.
 USE master
 GO
@@ -146,7 +144,7 @@ CREATE TABLE [dbo].[tblBookingTransaction]
     [RoomId]        INT NOT NULL,                       -- Foreign Key. Reference -> tblHotelRooms.RoomId
     [CheckIn]       SMALLDATETIME NOT NULL,             -- smalldatetime: YYYY-MM-DD hh:mm:ss
     [CheckOut]      SMALLDATETIME NOT NULL,
-    [TotalPrice]    INT NOT NULL,
+    [TotalPrice]    INT NOT NULL DEFAULT (0),
     [BookingId]     AS '#DDB' + RIGHT(1000000 + transactionId, 5)
     -- Unique. Format: #DDB00000N, Whereas N represented as a transactionId. Use trigger to do this one (or function).
     -- References:
