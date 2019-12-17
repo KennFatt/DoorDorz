@@ -33,9 +33,42 @@ EXECUTE [Hotel.AddRoom] 4, 'Suite', 4865000, 'Double', 0
 EXECUTE [Hotel.AddRoom] 4, 'Suite', 3905000, 'Double', 1
 EXECUTE [Hotel.AddRoom] 4, 'Premiere', 2712335, 'Single', 0
 
+SELECT * FROM [Hotel].[tblHotelFacilities]
+
+-- Add facilities. [Status: Succeed]
+EXECUTE [Hotel.AddFacility] 1, 'Fitness Center'
+EXECUTE [Hotel.AddFacility] 1, 'Swimming Pool'
+EXECUTE [Hotel.AddFacility] 1, 'Meeting Room'
+
+EXECUTE [Hotel.AddFacility] 2, 'Fitness Center'
+EXECUTE [Hotel.AddFacility] 2, 'Swimming Pool'
+EXECUTE [Hotel.AddFacility] 2, 'Meeting Room'
+
+EXECUTE [Hotel.AddFacility] 3, 'Fitness Center'
+EXECUTE [Hotel.AddFacility] 3, 'Swimming Pool'
+EXECUTE [Hotel.AddFacility] 3, 'Meeting Room'
+
+EXECUTE [Hotel.AddFacility] 4, 'Fitness Center'
+EXECUTE [Hotel.AddFacility] 4, 'Swimming Pool'
+EXECUTE [Hotel.AddFacility] 4, 'Meeting Room'
+EXECUTE [Hotel.AddFacility] 4, 'Airport Transport'
+
+
 SELECT * FROM [dbo].[tblBookingTransaction]
 
 -- Transaction. [Status: Succeed]
 EXECUTE [Transaction.NewTransaction] 1, 4, 10, '2019-12-17 12:00:00', '2019-12-19 12:00:00'
 EXECUTE [Transaction.NewTransaction] 2, 4, 11, '2019-12-19 12:00:00', '2019-12-25 13:00:00'
 EXECUTE [Transaction.NewTransaction] 3, 3, 8, '2019-12-25 12:00:00', '2019-12-26 13:00:00'
+
+SELECT * FROM [Hotel].[tblHotel]
+
+-- Review. [Status: Succeed, AVG it's that precise...]
+EXECUTE [Hotel.AddReview] 1, 4, 10
+EXECUTE [Hotel.AddReview] 2, 4, 8
+EXECUTE [Hotel.AddReview] 3, 4, 9
+
+EXECUTE [Hotel.AddReview] 1, 3, 9
+EXECUTE [Hotel.AddReview] 2, 2, 10
+EXECUTE [Hotel.AddReview] 2, 1, 9
+EXECUTE [Hotel.AddReview] 3, 1, 7

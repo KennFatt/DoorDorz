@@ -45,6 +45,23 @@ AS
         VALUES (@HotelId, @RoomType, @PricePerNight, @BedOption, @isSmokingRoom);
 GO
 
+CREATE PROCEDURE [Hotel.AddFacility]
+    @HotelId INT,
+    @FacilityName VARCHAR(18)
+AS
+    INSERT INTO [Hotel].[tblHotelFacilities] ([HotelId], [FacilityName])
+        VALUES (@HotelId, @FacilityName)
+GO
+
+CREATE PROCEDURE [Hotel.AddReview]
+    @UserId INT,
+    @HotelId INT,
+    @Score TINYINT
+AS
+    INSERT INTO [Hotel].[tblHotelReview] ([UserId], [HotelId], [Score])
+        VALUES (@UserId, @HotelId, @Score)
+GO
+
 CREATE PROCEDURE [Transaction.NewTransaction]
     @UserId INT,
     @HotelId INT,
