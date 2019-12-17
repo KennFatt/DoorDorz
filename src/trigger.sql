@@ -27,7 +27,15 @@ GO
 CREATE TRIGGER [RoomBookedEvent] ON [dbo].[tblBookingTransaction]
     AFTER INSERT                                                    -- Only after insertion (insertion indicate new transaction being recorded)
     AS
+    DECLARE @TransactionId INT
     DECLARE @RoomId INT
+    DECLARE @RoomPricePerNight INT
+    DECLARE @StayDuration INT
+
+    SELECT TOP 1 @TransactionId = [TransactionId]                   -- Getting recent RoomId from `tblBookingTransaction`
+        FROM [dbo].[tblBookingTransaction]
+            ORDER BY [TransactionId] DESC
+
     SELECT TOP 1 @RoomId = [RoomId]                                 -- Getting recent RoomId from `tblBookingTransaction`
         FROM [dbo].[tblBookingTransaction]
             ORDER BY [TransactionId] DESC
@@ -35,6 +43,19 @@ CREATE TRIGGER [RoomBookedEvent] ON [dbo].[tblBookingTransaction]
     UPDATE [Hotel].[tblHotelRooms]                                  -- Fire the update.
         SET [isAvailable] = 0                                       -- Set `isAvailable` to false (0).
             WHERE [RoomId] = @RoomId
+
+    SELECT @RoomPricePerNight = [PricePerNight]                     -- Get the price for one night.
+        FROM [Hotel].[tblHotelRooms]
+            WHERE [RoomId] = @RoomId
+
+    SELECT @StayDuration = DATEDIFF(DAY,                            -- Diff the date between CheckIn and out.
+        (SELECT [CheckIn] FROM [dbo].[tblBookingTransaction] WHERE [TransactionId] = @TransactionId),
+        (SELECT [CheckOut] FROM [dbo].[tblBookingTransaction] WHERE [TransactionId] = @TransactionId)
+    )
+
+    UPDATE [dbo].[tblBookingTransaction]                            -- Store total price.
+        SET [TotalPrice] = @RoomPricePerNight * @StayDuration
+            WHERE [TransactionId] = @TransactionId
 GO
 
 -- @Trigger RoomCreatedEvent
@@ -58,5 +79,3 @@ CREATE TRIGGER [RoomCreatedEvent] ON [Hotel].[tblHotelRooms]
         SET [LowestPrice] = @LowestPrice
             WHERE [HotelId] = @HotelId
 GO
-
--- TODO: Kalkulasi total harga pada transaksi berdasarkan checkin checkout
