@@ -4,7 +4,7 @@ GO
 -- @Trigger ReviewCreatedEvent
 -- This trigger will recognize a new records that has been inserted into the table
 -- and then update the value of `tblHotel`.`ReviewScore` automatically.
-CREATE TRIGGER ReviewCreatedEvent ON [dbo].[tblHotelReview]
+CREATE TRIGGER [ReviewCreatedEvent] ON [dbo].[tblHotelReview]
     AFTER INSERT, UPDATE
     AS
     DECLARE @HotelId INT
@@ -29,7 +29,7 @@ GO
 
 -- @Trigger RoomBookedEvent
 -- The trigger will automatically handle `tblHotelRooms`.`isAvailable` whenever its taken by any transaction.
-CREATE TRIGGER RoomBookedEvent ON [dbo].[tblBookingTransaction]
+CREATE TRIGGER [RoomBookedEvent] ON [dbo].[tblBookingTransaction]
     AFTER INSERT                                                    -- Only after insertion (insertion indicate new transaction being recorded)
     AS
     DECLARE @RoomId INT
@@ -47,7 +47,7 @@ GO
 
 -- @Trigger RoomCreatedEvent
 -- The trigger would update `LowestPrice` on table `Hotel` by sorting from following table.
-CREATE TRIGGER RoomCreatedEvent ON [dbo].[tblHotelRooms]
+CREATE TRIGGER [RoomCreatedEvent] ON [dbo].[tblHotelRooms]
     AFTER INSERT, UPDATE
     AS
     DECLARE @HotelId INT
